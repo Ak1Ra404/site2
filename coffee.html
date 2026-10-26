@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Зерно: кофейня</title>
+  <meta name="description" content="Кофейня «Зерно»: свежий кофе, своя выпечка и уютное место для работы.">
+  <style>
+    :root {
+      --cream: #fbf6ee;
+      --paper: #ffffff;
+      --ink: #2a1b14;
+      --brown: #4a2f21;
+      --muted: #7a655a;
+      --caramel: #c8863a;
+      --caramel-dark: #a76a24;
+      --green: #2f4a3a;
+      --line: #eadfce;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, .logo { font-family: Georgia, "Times New Roman", serif; }
+
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+    section { padding: 72px 0; }
+    h2 { font-size: 34px; line-height: 1.2; margin-bottom: 10px; color: var(--brown); }
+    .lead { color: var(--muted); margin-bottom: 36px; max-width: 540px; }
+
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid var(--caramel);
+      outline-offset: 3px;
+    }
+
+    /* ===== Меню ===== */
+    .nav {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(251, 246, 238, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .logo { font-size: 24px; font-weight: bold; color: var(--brown); text-decoration: none; }
+    .nav ul { display: flex; gap: 20px; list-style: none; }
+    .nav ul a { color: var(--muted); text-decoration: none; font-size: 15px; }
+    .nav ul a:hover { color: var(--ink); }
+
+    /* ===== Кнопки ===== */
+    .btn {
+      display: inline-block;
+      background: var(--caramel);
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      border: 2px solid var(--caramel);
+      border-radius: 30px;
+      padding: 13px 28px;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .btn:hover { background: var(--caramel-dark); border-color: var(--caramel-dark); transform: translateY(-2px); }
+    .btn.light { background: transparent; color: #fff; border-color: rgba(255,255,255,0.5); }
+    .btn.light:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+
+    /* ===== Первый экран ===== */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: var(--brown);
+      color: var(--cream);
+      padding: 96px 0 88px;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 420px; height: 420px;
+      right: -120px; top: -120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,134,58,0.55), rgba(200,134,58,0) 70%);
+    }
+    .hero .wrap { position: relative; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 14px;
+      margin-bottom: 22px;
+    }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: #8a8a8a; }
+    .dot.open { background: #4cd27a; }
+    .hero h1 { font-size: 42px; line-height: 1.12; max-width: 620px; margin-bottom: 18px; }
+    .hero p { font-size: 19px; max-width: 480px; opacity: 0.85; margin-bottom: 32px; }
+    .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+    /* ===== Преимущества ===== */
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+    .feature {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 26px;
+    }
+    .feature .emoji { font-size: 34px; margin-bottom: 12px; }
+    .feature h3 { font-size: 21px; color: var(--brown); margin-bottom: 6px; }
+    .feature p { color: var(--muted); }
+
+    /* ===== Меню кофейни ===== */
+    .menu-section { background: var(--paper); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+    .tab {
+      font: inherit; font-size: 15px;
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 9px 20px;
+      cursor: pointer;
+    }
+    .tab:hover { border-color: var(--caramel); color: var(--ink); }
+    .tab.active { background: var(--brown); border-color: var(--brown); color: #fff; }
+
+    .menu-list { display: grid; gap: 4px; max-width: 700px; }
+    .item {
+      display: flex; align-items: baseline; gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px dashed var(--line);
+    }
+    .item .name { font-weight: bold; }
+    .item .desc { display: block; color: var(--muted); font-size: 14px; font-weight: normal; }
+    .item .fill { flex: 1; }
+    .item .price { font-family: Georgia, serif; font-size: 19px; color: var(--caramel-dark); white-space: nowrap; }
+
+    /* ===== Часы и адрес ===== */
+    .info { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .info .box { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 26px; }
+    .info h3 { font-size: 21px; color: var(--brown); margin-bottom: 12px; }
+    .info p { color: var(--muted); margin-bottom: 6px; }
+    .info strong { color: var(--ink); }
+    .status-line { margin-top: 14px; font-weight: bold; }
+    .status-line.open { color: #2c8a52; }
+    .status-line.closed { color: #b24a2c; }
+
+    /* ===== Призыв ===== */
+    .cta { background: var(--green); color: #fff; text-align: center; }
+    .cta h2 { color: #fff; }
+    .cta p { opacity: 0.85; max-width: 480px; margin: 0 auto 28px; }
+
+    footer { text-align: center; padding: 28px 20px; font-size: 14px; color: var(--muted); }
+    footer a { color: var(--caramel-dark); }
+
+    /* ===== Анимация ===== */
+    .js .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .js .reveal.visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .js .reveal, .btn { transition: none; }
+    }
+
+    @media (min-width: 768px) { .hero h1 { font-size: 58px; } }
+    @media (max-width: 520px) {
+      section { padding: 52px 0; }
+      .nav ul { gap: 14px; }
+      .logo { font-size: 21px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="wrap">
+      <a class="logo" href="#top">Зерно</a>
+      <ul>
+        <li><a href="#menu">Меню</a></li>
+        <li><a href="#contacts">Контакты</a></li>
+        <li><a href="index.html#works">Портфолио</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="wrap">
+      <span class="pill"><span class="dot" id="hero-dot"></span><span id="hero-status">Кофейня «Зерно»</span></span>
+      <h1>Кофе, который хочется допить до конца</h1>
+      <p>Свежая обжарка, выпечка из собственной печи и тихий уголок у окна для работы и встреч.</p>
+      <div class="actions">
+        <a class="btn" href="#menu">Смотреть меню</a>
+        <a class="btn light" href="bots.html#coffee">Заказать в Telegram</a>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <h2 class="reveal">Почему к нам возвращаются</h2>
+      <p class="lead reveal">Три вещи, на которых держится наша кофейня.</p>
+      <div class="features">
+        <div class="feature reveal">
+          <div class="emoji">☕</div>
+          <h3>Свежие зёрна</h3>
+          <p>Берём небольшие партии и меняем сорта по сезону, чтобы вкус был ярким.</p>
+        </div>
+        <div class="feature reveal">
+          <div class="emoji">🥐</div>
+          <h3>Своя выпечка</h3>
+          <p>Круассаны и десерты выпекаем каждое утро и заканчиваем, когда закончились.</p>
+        </div>
+        <div class="feature reveal">
+          <div class="emoji">💻</div>
+          <h3>Удобно работать</h3>
+          <p>Быстрый Wi-Fi, розетки у каждого стола и никто не торопит.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="menu-section" id="menu">
+    <div class="wrap">
+      <h2 class="reveal">Меню</h2>
+      <p class="lead reveal">Цены указаны за стандартную порцию. Большой размер дороже на 40 ₽.</p>
+      <div class="tabs reveal" role="group" aria-label="Категории меню">
+        <button class="tab active" data-cat="coffee" aria-pressed="true">Кофе</button>
+        <button class="tab" data-cat="other" aria-pressed="false">Не кофе</button>
+        <button class="tab" data-cat="sweet" aria-pressed="false">Десерты</button>
+      </div>
+      <div class="menu-list" id="menu-list"></div>
+    </div>
+  </section>
+
+  <section id="contacts">
+    <div class="wrap">
+      <h2 class="reveal">Как нас найти</h2>
+      <p class="lead reveal">Заходите в любое время, мы работаем каждый день.</p>
+      <div class="info">
+        <div class="box reveal">
+          <h3>Часы работы</h3>
+          <p><strong>Пн–Пт:</strong> 8:00–22:00</p>
+          <p><strong>Сб–Вс:</strong> 9:00–23:00</p>
+          <p class="status-line" id="status-line"></p>
+        </div>
+        <div class="box reveal">
+          <h3>Адрес</h3>
+          <p>Ваш город, ул. Примерная, 12</p>
+          <p>Рядом с метро «Центральная»</p>
+          <p><strong>Телефон:</strong> +7 (000) 000-00-00</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <h2 class="reveal">Закажите заранее и заберите без очереди</h2>
+      <p class="reveal">Выберите напиток в нашем Telegram-боте, укажите время, и к вашему приходу всё будет готово.</p>
+      <a class="btn reveal" href="bots.html#coffee">Попробовать бота</a>
+    </div>
+  </section>
+
+  <footer>
+    Демо-проект из портфолио: все названия, адреса и цены вымышленные. <a href="index.html#works">← Вернуться к портфолио</a>
+  </footer>
+
+  <script>
+    document.documentElement.classList.add('js');
+
+    // ===== Данные меню: добавляйте и меняйте позиции здесь =====
+    const MENU = {
+      coffee: [
+        { name: 'Эспрессо',  desc: 'Классический, 30 мл',               price: 150 },
+        { name: 'Американо', desc: 'Эспрессо с горячей водой',          price: 180 },
+        { name: 'Капучино', desc: 'Эспрессо, молоко, плотная пенка',   price: 220 },
+        { name: 'Латте',    desc: 'Мягкий, много молока',               price: 240 },
+        { name: 'Раф',      desc: 'Со сливками и ванильным сахаром',    price: 280 },
+        { name: 'Флэт уайт', desc: 'Двойной эспрессо и бархатное молоко', price: 260 }
+      ],
+      other: [
+        { name: 'Какао',          desc: 'На молоке, с зефиром',        price: 230 },
+        { name: 'Чай листовой',   desc: 'Чёрный, зелёный или травяной', price: 200 },
+        { name: 'Лимонад дня',    desc: 'Спросите у бариста',           price: 250 },
+        { name: 'Облепиховый чай', desc: 'С мёдом и имбирём',            price: 260 }
+      ],
+      sweet: [
+        { name: 'Круассан',          desc: 'Сливочный, из нашей печи',    price: 190 },
+        { name: 'Чизкейк',           desc: 'Нью-Йорк, с ягодным соусом',  price: 290 },
+        { name: 'Морковный торт',    desc: 'С кремом на сливочном сыре',  price: 270 },
+        { name: 'Печенье с шоколадом', desc: 'Тёплое, 2 штуки',            price: 150 }
+      ]
+    };
+
+    const listEl = document.getElementById('menu-list');
+    const tabs = document.querySelectorAll('.tab');
+
+    function renderMenu(category) {
+      listEl.innerHTML = '';
+      MENU[category].forEach((item) => {
+        const row = document.createElement('div');
+        row.className = 'item';
+
+        const nameEl = document.createElement('span');
+        nameEl.className = 'name';
+        nameEl.textContent = item.name;
+
+        const descEl = document.createElement('span');
+        descEl.className = 'desc';
+        descEl.textContent = item.desc;
+        nameEl.appendChild(descEl);
+
+        const fill = document.createElement('span');
+        fill.className = 'fill';
+
+        const priceEl = document.createElement('span');
+        priceEl.className = 'price';
+        priceEl.textContent = item.price + ' ₽';
+
+        row.append(nameEl, fill, priceEl);
+        listEl.appendChild(row);
+      });
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((t) => {
+          const active = t === tab;
+          t.classList.toggle('active', active);
+          t.setAttribute('aria-pressed', String(active));
+        });
+        renderMenu(tab.dataset.cat);
+      });
+    });
+    renderMenu('coffee');
+
+
+    // ===== «Сейчас открыто» по времени посетителя =====
+    // Часы работы: будни 8–22, выходные 9–23 (0 — воскресенье, 6 — суббота)
+    function updateStatus() {
+      const now = new Date();
+      const day = now.getDay();
+      const weekend = day === 0 || day === 6;
+      const openAt = weekend ? 9 : 8;
+      const closeAt = weekend ? 23 : 22;
+      const hour = now.getHours() + now.getMinutes() / 60;
+      const isOpen = hour >= openAt && hour < closeAt;
+
+      const line = document.getElementById('status-line');
+      const dot = document.getElementById('hero-dot');
+      const heroText = document.getElementById('hero-status');
+
+      if (isOpen) {
+        line.textContent = 'Сейчас открыто, до ' + closeAt + ':00';
+        line.className = 'status-line open';
+        heroText.textContent = 'Открыто до ' + closeAt + ':00';
+        dot.classList.add('open');
+      } else {
+        line.textContent = 'Сейчас закрыто. Откроемся в ' + openAt + ':00';
+        line.className = 'status-line closed';
+        heroText.textContent = 'Откроемся в ' + openAt + ':00';
+        dot.classList.remove('open');
+      }
+    }
+    updateStatus();
+
+
+    // ===== Плавное появление блоков =====
+    const items = document.querySelectorAll('.reveal');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if ('IntersectionObserver' in window && !reduce) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      items.forEach((el) => observer.observe(el));
+    } else {
+      items.forEach((el) => el.classList.add('visible'));
+    }
+  </script>
+
+</body>
+</html>
